@@ -169,7 +169,7 @@ describe('Binary search tree', () => {
     });
 
     it.optional('correctly remove values', () => {
-      const { values } = getTestingTools(20);
+      const { values } = getTestingTools(20); console.log(values);
       const tree = new BinarySearchTree();
       values.forEach(value => tree.add(value));
       values.sort((a, b) => a % 2 - b % 2 || a - b);
