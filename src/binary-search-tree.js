@@ -68,32 +68,72 @@ class BinarySearchTree {
     return null;
   }
 
-  deleteNote(node, value) {
-    if (node === null) return node;
-    if (value < node.data) {node.left = this.deleteNote(node.left, value);
-    } else if (value > node.data) {node.right = this.deleteNote(node.right, value);
-    } else {
-      this.count--;
-      if (!node.left && !node.right) return null;
-      if (!node.left) {
-        return node.right;
-      } else if (!node.right) {
-        return node.left
-      };
-      // find min right node
-      let searchNode = node.right;
-      while (searchNode.left) {
-        searchNode = searchNode.left
-      };
-      node.data = searchNode.data;
-      node.right = this.deleteNote(node.right, value);
-    }
+  // deleteNote(node, value) {
+  //   if (node === null) return node;
+  //   if (value < node.data) {node.left = this.deleteNote(node.left, value);
+  //   } else if (value > node.data) {node.right = this.deleteNote(node.right, value);
+  //   } else {
+  //     this.count--;
+  //     if (!node.left && !node.right) return null;
+  //     if (!node.left) {
+  //       return node.right;
+  //     } else if (!node.right) {
+  //       return node.left
+  //     };
+  //     let searchNode = node.right;
+  //     while (searchNode.left) {
+  //       searchNode = searchNode.left
+  //     };
+  //     node.data = searchNode.data;
+  //     node.right = this.deleteNote(node.right, value);
+  //   }
     
-    return node;
-  }
+  //   return node;
+  // }
 
-  remove(value) {
-    this._root = this.deleteNote(this._root, value)
+  // remove(value) {
+  //   this._root = this.deleteNote(this._root, value)
+  // }
+
+  remove(data) {
+    this._root = removeNode(this._root, data);
+
+    function removeNode(node, data) {
+      if (!node) {
+        return null;
+      }
+
+      if (data < node.data) {
+        node.left = removeNode(node.left, data);
+        return node;
+      } else if (node.data < data) {
+        node.right = removeNode(node.right, data);
+        return node;
+      } else {
+        // node with no children
+        if (!node.left && !node.right) {
+          return null;
+        }
+
+        // node with only one child
+        if (!node.left) {
+          return node.right;
+        } else if (!node.right) {
+          return node.left;
+        }
+
+        // node with two children
+        let minRight = node.right;
+        while (minRight.left) {
+          minRight = minRight.left;
+        }
+        node.data = minRight.data;
+
+        node.right = removeNode(node.right, minRight.data);
+
+        return node;
+      }
+    }
   }
 
   min() {
